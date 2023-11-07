@@ -7,7 +7,7 @@ Vue.use(VueRouter);
 
 import Home from "@/pages/Home"
 import Login from "@/pages/Login"
-import Search from "@/pages/Search"
+import Search from "@/pages/Search/index.vue"
 import Register from "@/pages/Register"
 // 重写push和replace
 //将push方法进行封装，避免重复点击报错
@@ -56,9 +56,10 @@ let router = new VueRouter(
                 path: "/search/:keyword?",
                 component: Search,
                 meta: { show: true },
-                name: "search",
+                name: "Search",
                 props: ($route) => ({
                     keyword: $route.params.keyword,
+                    k: $route.query.k,
                 }),
             },
             {
@@ -66,10 +67,10 @@ let router = new VueRouter(
                 component: Register,
                 meta: { show: false }
             },
-            {
-                path: "*",
-                redirect: "/Home", //一上来就展示首页
-            },
+            // {
+            //     path: "*",
+            //     redirect: "/home", //一上来就展示首页
+            // },
         ]
 
     }

@@ -4,23 +4,20 @@
     <div class="sortList clearfix">
       <div class="center">
         <!--banner轮播-->
-        <div class="swiper-container" id="mySwiper">
+        <!-- <div class="swiper-container" id="mySwiper">
           <div class="swiper-wrapper">
-            <!-- <div
-              class="swiper-slide"
-              v-for="(carouser, index) in bannerList"
-              :key="carouser.id"
-            >
+            <div class="swiper-slide" v-for="(carouser, index) in bannerList" :key="carouser.id">
               <img :src="carouser.imgUrl" />
-            </div> -->
+            </div>
           </div>
-          <!-- 如果需要分页器 -->
+         //如果需要分页器
           <div class="swiper-pagination"></div>
 
-          <!-- 如果需要导航按钮 -->
+         // 如果需要导航按钮 
           <div class="swiper-button-prev"></div>
           <div class="swiper-button-next"></div>
-        </div>
+        </div> -->
+        <Carousel :carouselList="bannerList"></Carousel>
       </div>
       <div class="right">
         <div class="news">
@@ -96,9 +93,49 @@
 </template>
 
 <script>
-    export default {
-        
-    }
+import Swiper from "swiper";
+import { mapState } from 'vuex'
+export default {
+  //每一次挂载就获取数据存储于vuex
+  mounted() {
+    this.$store.dispatch("getBannerList");
+
+    // this.timer = setTimeout(() => {
+    //   const a = this.$store.state.Home.bannerList;
+    //   console.log(a);
+    // }, 3000);
+  },
+  computed: {
+    //扩展运算
+    ...mapState({
+      bannerList: (state) => state.Home.bannerList,
+    }),
+  },
+  watch: {
+    bannerList: {
+      handler(newvalue, oldvalue) {
+        this.$nextTick(() => {
+          var mySwiper = new Swiper(
+            document.querySelector(".swiper-container"),
+            {
+              loop: true, // 循环模式选项
+              // 如果需要分页器
+              pagination: {
+                el: ".swiper-pagination",
+                clickable: true, //点击小球的时候也切换图片
+              },
+              // 如果需要前进后退按钮
+              navigation: {
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              },
+            }
+          );
+        });
+      },
+    },
+  },
+}
 </script>
 
 <style lang="less" scoped>
